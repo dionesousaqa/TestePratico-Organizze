@@ -27,7 +27,7 @@ public class TestPratico {
         FirefoxOptions options = new FirefoxOptions();
         options.addPreference("intl.accept_languages", "pt-BR,pt");
         options.addPreference("intl.locale.requested", "pt-BR");
-        options.addArguments("--headless=new"); // 🆕 modo headless do Firefox 120+
+       // options.addArguments("--headless=new"); // 🆕 modo headless do Firefox 120+
 
         driver = new FirefoxDriver(options);
 
