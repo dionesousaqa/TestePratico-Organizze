@@ -55,7 +55,7 @@ public class TestPratico {
         WebDriverWait waitCss = new WebDriverWait(driver ,Duration.ofSeconds(30));
         WebElement campoEmail2 = waitCss.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".h-\\[50px\\]")));
         campoEmail2.submit();
-             
+
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("(//*[@Class='font-normal'])[1]")));
