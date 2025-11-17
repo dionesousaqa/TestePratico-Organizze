@@ -25,7 +25,9 @@ public class TestPratico {
         WebDriverManager.firefoxdriver().clearDriverCache().setup();
 
         FirefoxOptions options = new FirefoxOptions();
-       options.addArguments("--headless=new"); // 🆕 modo headless do Firefox 120+
+        options.addPreference("intl.accept_languages", "pt-BR,pt");
+        options.addPreference("intl.locale.requested", "pt-BR");
+        options.addArguments("--headless=new"); // 🆕 modo headless do Firefox 120+
 
         driver = new FirefoxDriver(options);
 
