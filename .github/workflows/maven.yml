@@ -28,4 +28,16 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn clean install -DskipTests=false   
+      run: mvn clean install -DskipTests=false
+
+    - name: Set Firefox to Brazilian Portuguese
+      run: |
+            sudo apt-get update
+            sudo apt-get install -y language-pack-pt language-pack-pt-base
+            sudo update-locale LANG=pt_BR.UTF-8
+
+    - name: Set locale
+      run: |
+       echo "LANG=pt_BR.UTF-8" >> $GITHUB_ENV
+       echo "LANGUAGE=pt_BR:pt:en" >> $GITHUB_ENV
+       echo "LC_ALL=pt_BR.UTF-8" >> $GITHUB_ENV
