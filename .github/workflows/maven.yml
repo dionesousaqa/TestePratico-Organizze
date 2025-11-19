@@ -1,52 +1,41 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
-  env:
-    LANG: pt_BR.UTF-8
-    LANGUAGE: pt_BR:pt
-    LC_ALL: pt_BR.UTF-8
+    branches: ["main"]
 
-  steps:
-    - name: Install pt-BR language pack
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y language-pack-pt
-        sudo update-locale LANG=pt_BR.UTF-8
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    env:
+      LANG: pt_BR.UTF-8
+      LANGUAGE: pt_BR:pt
+      LC_ALL: pt_BR.UTF-8
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn clean install -DskipTests=false
+      - uses: actions/checkout@v4
 
-    - name: Set Firefox to Brazilian Portuguese
-      run: |
-            sudo apt-get update
-            sudo apt-get install -y language-pack-pt language-pack-pt-base
-            sudo update-locale LANG=pt_BR.UTF-8
+      - name: Install pt-BR language pack
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y language-pack-pt language-pack-pt-base
+          sudo update-locale LANG=pt_BR.UTF-8
 
-    - name: Set locale
-      run: |
-       echo "LANG=pt_BR.UTF-8" >> $GITHUB_ENV
-       echo "LANGUAGE=pt_BR:pt:en" >> $GITHUB_ENV
-       echo "LC_ALL=pt_BR.UTF-8" >> $GITHUB_ENV
+      - name: Export locale
+        run: |
+          echo "LANG=pt_BR.UTF-8" >> $GITHUB_ENV
+          echo "LANGUAGE=pt_BR:pt:en" >> $GITHUB_ENV
+          echo "LC_ALL=pt_BR.UTF-8" >> $GITHUB_ENV
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven (run tests)
+        run: mvn clean install -DskipTests=false
