@@ -13,12 +13,21 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  env:
+    LANG: pt_BR.UTF-8
+    LANGUAGE: pt_BR:pt
+    LC_ALL: pt_BR.UTF-8
 
+  steps:
+    - name: Install pt-BR language pack
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y language-pack-pt
+        sudo update-locale LANG=pt_BR.UTF-8
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 21
