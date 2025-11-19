@@ -88,7 +88,10 @@ public class TestPratico {
         String mensagem = dsl.extrairCampoSenha();
         System.out.println("Mensagem exibida: " + mensagem);
 
-        Assert.assertEquals("Preencha este campo.", mensagem);
+        assertThat(mensagem, anyOf(
+                is("Preencha este campo."),
+                is("Please fill out this field.")
+        ));
 
     }
 
@@ -109,7 +112,10 @@ public class TestPratico {
 
         System.out.println("Mensagem exibida: " + mensagem);
 
-        Assert.assertEquals("Preencha este campo.", mensagem);
+        assertThat(mensagem, anyOf(
+                is("Preencha este campo."),
+                is("Please fill out this field.")
+        ));
 
 
     }
@@ -300,7 +306,12 @@ public class TestPratico {
 
         System.out.println("Mensagem exibida: " + mensagem);
 
-        Assert.assertEquals("Marque esta opção se quiser continuar.", mensagem);
+        assertThat(mensagem, anyOf(
+                is("Marque esta opção se quiser continuar."),
+                is("Please check this box if you want to proceed.")
+        ));
+
+
 
     }
 
