@@ -14,6 +14,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.AnyOf.anyOf;
+import static org.hamcrest.core.Is.is;
+
 
 public class TestPratico {
     private WebDriver driver;
@@ -240,7 +244,11 @@ public class TestPratico {
 
         System.out.println("Mensagem exibida: " + mensagem);
 
-        Assert.assertEquals("Preencha este campo.", mensagem);
+        assertThat(mensagem, anyOf(
+                is("Preencha este campo."),
+                is("Please fill out this field.")
+        ));
+
 
     }
 
