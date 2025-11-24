@@ -30,7 +30,7 @@ public class TestPratico {
         options.addPreference("intl.locale.requested", "pt-BR");
         options.addArguments("--headless=new"); // 🆕 modo headless do Firefox 120+
 
-        driver = new FirefoxDriver();
+        driver = new FirefoxDriver(options);
 
         driver.get("https://www.organizze.com.br/");
         driver.findElement(By.xpath("//*[text()='Login']")).click();
