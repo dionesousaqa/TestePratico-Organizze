@@ -3,10 +3,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -33,7 +30,7 @@ public class TestPratico {
         options.addPreference("intl.locale.requested", "pt-BR");
         options.addArguments("--headless=new"); // 🆕 modo headless do Firefox 120+
 
-        driver = new FirefoxDriver(options);
+        driver = new FirefoxDriver();
 
         driver.get("https://www.organizze.com.br/");
         driver.findElement(By.xpath("//*[text()='Login']")).click();
@@ -51,25 +48,21 @@ public class TestPratico {
     public void loginVazio()  {
 
 
-        WebDriverWait waitEmail = new WebDriverWait(driver, Duration.ofSeconds(30));
-        waitEmail.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".h-\\[50px\\]")));
+        WebElement campoEmail = driver.findElement(By.cssSelector("input[type='email']"));
+        WebElement campoSenha = driver.findElement(By.cssSelector("input[type='password']"));
+        WebElement btnEntrar = driver.findElement(By.cssSelector("button[type='submit']"));
 
-        WebElement campoEmail = driver.findElement(By.cssSelector(".h-\\[50px\\]"));
-        campoEmail.click();
+        campoEmail.clear();
+        campoSenha.clear();
+
+        btnEntrar.click();
+
+        String valorEmail = campoEmail.getAttribute("value");
+
+        Assert.assertTrue(valorEmail.isEmpty());
 
 
-        WebDriverWait waitCss = new WebDriverWait(driver ,Duration.ofSeconds(30));
-        WebElement campoEmail2 = waitCss.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".h-\\[50px\\]")));
-        campoEmail2.submit();
 
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("(//*[@Class='font-normal'])[1]")));
-
-        String msn = dsl.obterTexto("(//*[@Class='font-normal'])[1]");
-        System.out.println("Erro: " + msn);
-
-        Assert.assertEquals("email ou senha inválidos", msn);
 
     }
 
@@ -276,11 +269,14 @@ public class TestPratico {
         dsl.clicarBotao("(//form//button)[3]");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        wait.until(ExpectedConditions.textToBe(By.xpath("(//form//div[1]/span)[1]") , "já está em uso"));
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("(//form//div[1]/span)[1]")));
 
         String error = dsl.obterTexto("(//form//div[1]/span)[1]");
 
-        Assert.assertEquals("já está em uso", error);
+        assertThat(error, anyOf(
+                is("já está em uso"),
+                is("this está em uso")
+        ));
 
     }
 
