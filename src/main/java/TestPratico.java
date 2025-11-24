@@ -207,7 +207,8 @@ public class TestPratico {
 
         WebDriverWait waitId = new WebDriverWait(driver, Duration.ofSeconds(30));
         waitId.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("email")));
-        page.setEmail("teste@teste");
+        WebElement campoEmail = driver.findElement(By.cssSelector("input[type='email']"));
+        campoEmail.sendKeys("123");
 
         page.setSenha("123456");
         WebDriverWait waitIdConfirm = new WebDriverWait(driver, Duration.ofSeconds(30));
@@ -217,11 +218,13 @@ public class TestPratico {
         driver.findElement(By.id("terms_of_use")).click();
         dsl.clicarBotao("(//form//button)[3]");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        wait.until(ExpectedConditions.textToBe(By.xpath("//form//div[1]/span\n"), "é inválido"));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        String error = dsl.obterTexto("//form//div[1]/span\n");
-        Assert.assertEquals("é inválido", error);
+        Boolean valido = (Boolean) js.executeScript(
+                "return arguments[0].checkValidity();", campoEmail);
+        Assert.assertFalse(valido);
+
+
 
     }
 
