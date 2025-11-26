@@ -18,6 +18,9 @@ public class DSL {
     public void clicarBotao(String xpath) {
         driver.findElement(By.xpath(xpath)).click();
     }
+    public void clicarBotaoId(String id) {
+        driver.findElement(By.id(id)).click();
+    }
 
     public void clicarBotaoByCssSelector(String cssClass) {
         driver.findElement(By.cssSelector(cssClass)).click();

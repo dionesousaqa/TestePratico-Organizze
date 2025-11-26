@@ -30,7 +30,7 @@ public class TestPratico {
         options.addPreference("intl.locale.requested", "pt-BR");
         options.addArguments("--headless=new"); // 🆕 modo headless do Firefox 120+
 
-        driver = new FirefoxDriver(options);
+        driver = new FirefoxDriver();
 
         driver.get("https://www.organizze.com.br/");
         driver.findElement(By.xpath("//*[text()='Login']")).click();
@@ -256,30 +256,38 @@ public class TestPratico {
 
     @Test
     public void cadastrarEmailJaCadastrado()  {
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(30));
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("/html/body/div[2]/main/div[3]/footer/p/a")));
 
-        dsl.clicarBotao("/html/body/div[1]/main/div[3]/footer/p/a");
+        dsl.clicarBotao("/html/body/div[2]/main/div[3]/footer/p/a");
 
-        WebDriverWait waitId = new WebDriverWait(driver,Duration.ofSeconds(30));
-        waitId.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("email")));
-
+        WebDriverWait waitEmail = new WebDriverWait(driver,Duration.ofSeconds(30));
+        waitEmail.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("email")));
         page.setEmail("teste25@gmail.com");
 
+        WebDriverWait waitPww = new WebDriverWait(driver,Duration.ofSeconds(30));
+        waitPww.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("password")));
+        dsl.clicarBotaoId("password");
         page.setSenha("123456");
 
+        WebDriverWait waitConfPww = new WebDriverWait(driver,Duration.ofSeconds(30));
+        waitConfPww.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id("password_confirmation")));
+        dsl.clicarBotaoId("password_confirmation");
         page.setConfirmarSenha("123456");
 
         driver.findElement(By.id("terms_of_use")).click();
-        dsl.clicarBotao("(//form//button)[3]");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("(//form//div[1]/span)[1]")));
+        dsl.clicarBotaoByCssSelector(".not-while-submitting");
 
-        String error = dsl.obterTexto("(//form//div[1]/span)[1]");
+        WebDriverWait waitError = new WebDriverWait(driver,Duration.ofSeconds(30));
+        waitError.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//span[contains(text(),'está em uso')]")));
+        String error = dsl.obterTexto("//span[contains(text(),'está em uso')]");
 
         assertThat(error, anyOf(
                 is("já está em uso"),
                 is("this está em uso")
         ));
+
 
     }
 
